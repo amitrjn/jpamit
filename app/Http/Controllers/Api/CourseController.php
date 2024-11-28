@@ -7,22 +7,17 @@ use App\Models\Course;
 use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseResource;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum');
-        $this->middleware('check.organizer')->except(['index', 'show']);
+        // Remove all middleware
     }
 
     public function index()
     {
         $courses = Course::with('creator')
-            ->when(!Auth::user()->isOrganizer(), function ($query) {
-                return $query->where('is_active', true);
-            })
             ->latest()
             ->paginate(10);
 
@@ -35,7 +30,7 @@ class CourseController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'duration_weeks' => $request->duration_weeks,
-            'created_by' => Auth::id(),
+            'created_by' => $request->created_by,
             'image_url' => $request->hasFile('image') 
                 ? $request->file('image')->store('courses', 'public')
                 : null
@@ -51,8 +46,6 @@ class CourseController extends Controller
 
     public function update(CourseRequest $request, Course $course)
     {
-        $this->authorize('update', $course);
-
         $course->update([
             'title' => $request->title,
             'description' => $request->description,
@@ -71,7 +64,6 @@ class CourseController extends Controller
 
     public function destroy(Course $course)
     {
-        $this->authorize('delete', $course);
         $course->delete();
 
         return response()->json(['message' => 'Course deleted successfully']);
