@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: laravel-app
+    env: php
+    buildCommand: composer install --no-interaction --prefer-dist --optimize-autoloader && php artisan config:cache && php artisan route:cache && php artisan view:cache
+    startCommand: php artisan serve --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: APP_NAME
+        value: Laravel
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        fromService:
+          type: web
+          name: laravel-app
+          property: host
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        value: aws-0-ap-south-1.pooler.supabase.com
+      - key: DB_PORT
+        value: 6543
+      - key: DB_DATABASE
+        value: postgres
+      - key: DB_USERNAME
+        value: postgres.ebcluurrhlhfmqwwloxv
+      - key: DB_PASSWORD
+        sync: false 
