@@ -34,3 +34,6 @@ RUN chown -R www-data:www-data /var/www
 
 # Expose port 8000 and start PHP-FPM server
 EXPOSE 8000
+
+# Ensure the application starts correctly
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
