@@ -31,3 +31,6 @@ RUN composer install
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www 
+
+# Expose port 8000 and start PHP-FPM server
+EXPOSE 8000
