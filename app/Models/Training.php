@@ -26,10 +26,12 @@ class Training extends Model
     }
 
     protected $fillable = [
+        'name',
+        'description',
         'course_id',
-        'title',
         'start_date',
-        'end_date'
+        'end_date',
+        'is_active'
     ];
 
     protected $casts = [
