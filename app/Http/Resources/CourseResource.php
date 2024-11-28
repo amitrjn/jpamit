@@ -12,14 +12,14 @@ class CourseResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'image_url' => $this->image_url,
             'duration_weeks' => $this->duration_weeks,
             'is_active' => $this->is_active,
+            'image_url' => $this->image_url ? asset('storage/' . $this->image_url) : null,
             'created_by' => $this->created_by,
-            'creator' => new UserResource($this->whenLoaded('creator')),
-            'trainings' => TrainingResource::collection($this->whenLoaded('trainings')),
+            'creator' => $this->whenLoaded('creator'),
+            'trainings' => $this->whenLoaded('trainings'),
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
         ];
     }
 } 
